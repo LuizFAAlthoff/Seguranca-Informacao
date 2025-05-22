@@ -1,4 +1,3 @@
-# Lista completa do alfabeto incluindo números, letras minúsculas e maiúsculas, e caracteres especiais
 lista_alfabeto = ["0", "1", "2", "3", "4", "5", "6", "7",
                  "8", "9", "A", "a", "B", "b", "C", "c",
                  "D", "d", "E", "e", "F", "f", "G", "g",
@@ -9,14 +8,7 @@ lista_alfabeto = ["0", "1", "2", "3", "4", "5", "6", "7",
                  "X", "x", "Y", "y", "Z", "z", "!", "?"]
 
 def multiplicar_matrizes(matriz1, matriz2):
-    """
-    Multiplica duas matrizes 2x2
-    matriz1: primeira matriz 2x2
-    matriz2: segunda matriz 2x2
-    retorna: matriz 2x2 resultante
-    """
-    # Inicializa a matriz resultado com zeros
-    resultado = [[0, 0], [0, 0]]
+    resultado = [[0, 0], [0, 0]] # Inicializa a matriz resultado com zeros
     
     # Realiza a multiplicação de matrizes
     for i in range(2):  # Para cada linha da primeira matriz
@@ -27,33 +19,17 @@ def multiplicar_matrizes(matriz1, matriz2):
     return resultado
 
 def calcular_determinante(matriz):
-    """
-    Calcula o determinante de uma matriz 2x2
-    matriz: matriz 2x2
-    retorna: determinante
-    """
     # Fórmula do determinante para matriz 2x2: det = a*d - b*c
     return matriz[0][0] * matriz[1][1] - matriz[0][1] * matriz[1][0]
 
 def calcular_inverso_multiplicativo(numero, modulo):
-    """
-    Calcula o inverso multiplicativo de um número módulo 65
-    numero: número para calcular o inverso
-    modulo: módulo (tamanho do alfabeto)
-    retorna: inverso multiplicativo ou None se não existir
-    """
-    # Procura um número que multiplicado pelo número original resulte em 1 módulo 65
-    for i in range(modulo):
-        if (numero * i) % modulo == 1:
+    # Procura um número que multiplicado pelo número original resulte em 1 módulo 65, já que a matriz identidade é 1
+    for i in range(modulo): # Verifica todos os números de 0 a 64
+        if (numero * i) % modulo == 1: # Se o produto do número e i módulo 65 for igual a 1, então i é o inverso multiplicativo
             return i
     return None
 
 def calcular_matriz_inversa(matriz):
-    """
-    Calcula a matriz inversa de uma matriz 2x2
-    matriz: matriz 2x2
-    retorna: matriz inversa
-    """
     # Calcula o determinante da matriz
     det = calcular_determinante(matriz)
     
@@ -62,7 +38,7 @@ def calcular_matriz_inversa(matriz):
     
     # Verifica se a matriz possui inversa
     if det_inv is None:
-        raise ValueError("A matriz não possui inversa módulo 65")
+        raise ValueError("A matriz não possui inversa")
     
     # Calcula a matriz adjunta (transposta da matriz de cofatores)
     adj = [
@@ -79,18 +55,14 @@ def calcular_matriz_inversa(matriz):
     return inversa
 
 def texto_para_matrizes(texto):
-    """
-    Converte um texto em uma lista de matrizes 2x2
-    texto: string a ser convertida
-    retorna: lista de matrizes 2x2
-    """
     # Remove espaços extras
     texto = texto.strip()
     
     # Converte a string em uma lista de caracteres
     caracteres = list(texto)
     
-    # Calcula quantos caracteres faltam para ser múltiplo de 4
+    # Calcula quantos caracteres faltam para ser múltiplo de 4 (4 pois estamos usando matrizes 2x2)
+    # Se o comprimento do texto não for múltiplo de 4, preenche com espaços
     faltam = (4 - len(caracteres)) % 4
     
     # Preenche com espaços se necessário
@@ -104,6 +76,36 @@ def texto_para_matrizes(texto):
         linha2 = bloco[2:4]        # Segunda linha da matriz 2x2
         matriz = [linha1, linha2]  # Monta a matriz
         matrizes.append(matriz)    # Adiciona à lista de matrizes
+        #exemplo de output: 
+        # 'eu gosto de tomat' --> 
+        # [
+
+        # [
+        # ['e', 'u'], 
+        # [' ', 'g']
+        # ], 
+
+        # [
+        # ['o', 's'], 
+        # ['t', 'o']
+        # ], 
+
+        # [
+        # [' ', 'd'], 
+        # ['e', ' ']
+        # ], 
+
+        # [
+        # ['t', 'o'], 
+        # ['m', 'a']
+        # ], 
+
+        # [
+        # ['t', ' '], 
+        # [' ', ' ']
+        # ]
+
+        # ]
     
     # Substitui os caracteres pelos seus índices na lista_alfabeto
     for i in range(len(matrizes)):
@@ -114,12 +116,6 @@ def texto_para_matrizes(texto):
     return matrizes
 
 def criptografar_matriz(matriz, chave):
-    """
-    Criptografa uma matriz usando a chave
-    matriz: matriz 2x2 a ser criptografada
-    chave: matriz 2x2 de criptografia
-    retorna: matriz criptografada
-    """
     # Multiplica a matriz pela chave
     resultado = multiplicar_matrizes(chave, matriz)
     
@@ -131,18 +127,12 @@ def criptografar_matriz(matriz, chave):
     return resultado
 
 def descriptografar_matriz(matriz, chave):
-    """
-    Descriptografa uma matriz usando a chave
-    matriz: matriz 2x2 criptografada
-    chave: matriz 2x2 de criptografia
-    retorna: matriz descriptografada
-    """
     # Calcula a matriz inversa da chave
     chave_inv = calcular_matriz_inversa(chave)
-    
+
     # Multiplica a matriz criptografada pela inversa da chave
     resultado = multiplicar_matrizes(chave_inv, matriz)
-    
+
     # Aplica o módulo apenas no final para garantir índices válidos
     for i in range(2):
         for j in range(2):
@@ -151,11 +141,6 @@ def descriptografar_matriz(matriz, chave):
     return resultado
 
 def matriz_para_texto(matrizes):
-    """
-    Converte as matrizes de volta para texto
-    matrizes: lista de matrizes 2x2
-    retorna: string resultante
-    """
     texto = ""
     # Para cada matriz na lista
     for matriz in matrizes:
