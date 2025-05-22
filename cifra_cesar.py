@@ -25,4 +25,3 @@ for palavra in lista_texto_original_separado:
 texto_criptografado.strip()
 
 print("Texto criptografado: ", texto_criptografado)
-
